@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+#@reboot /root/ssplz_device/client/main.py
+
 import flask
-from flask import Flask, Response, request, jsonify
+from flask import Flask, Response, request, jsonify, render_template
 
 import OPi.GPIO as GPIO
 
@@ -88,9 +90,12 @@ def put_signal():
     global url
     global payload
 
-    res = requests.post(url, data=payload, timeout=1.0)
-    
-    print(res.text)
+    try:
+        res = requests.post(url, data=payload, timeout=1.0)
+        print(res.text)
+        
+    except:
+        print("not working.")
 
 def send_signal_gae(num):
 
@@ -141,7 +146,7 @@ def send_signal_gae(num):
     else:
         
         thd = threading.Thread(target=put_signal)
-        thd.join()
+        thd.start()
 
 def set_output(num, value):
 
@@ -228,6 +233,11 @@ def output():
     send_signal_gae(num)
 
     return print_status()
+
+@app.route('/control')
+def control():
+
+    return render_template('control.html')
 
 if __name__ == "__main__":
     init()

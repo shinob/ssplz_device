@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<style>
+* {
+	margin: 0px;
+	padding: 0px;
+	font-size: 10pt;
+}
+td {
+	vertical-align: middle;
+	border: 0px solid #F00;
+	padding: 5px;
+}
+form {
+	border: 0px solid #0F0;
+}
+input {
+	padding: 5px;
+	width: 50px;
+}
+		</style>
+	</head>
+	<body>
+		<div>
+			<table>
+				<tr>
+					<td>OUTPUT 1</td>
+					<td>
+						<form action="/output" method="post">
+							<input type="hidden" name="num" value="1" />
+							<input type="hidden" name="val" value="1" />
+							<input type="submit" name="num" value="ON" />
+						</form>
+					</td>
+					<td>
+						<form action="/output" method="post">
+							<input type="hidden" name="num" value="1" />
+							<input type="hidden" name="val" value="0" />
+							<input type="submit" name="num" value="OFF" />
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td>OUTPUT 2</td>
+					<td>
+						<form action="/output" method="post">
+							<input type="hidden" name="num" value="2" />
+							<input type="hidden" name="val" value="1" />
+							<input type="submit" name="num" value="ON" />
+						</form>
+					</td>
+					<td>
+						<form action="/output" method="post">
+							<input type="hidden" name="num" value="2" />
+							<input type="hidden" name="val" value="0" />
+							<input type="submit" name="num" value="OFF" />
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
