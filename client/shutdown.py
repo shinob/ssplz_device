@@ -75,23 +75,27 @@ def set_output_api(num, value):
     except:
         print("not working.")
     
+def output_by_hour(hour, num):
+
+    h = dt.now().hour
+    print(hour)
+
+    #num = 1
+    value = 1
+
+    if h < hour:
+        value = 0
+
+    #set_output(num, value)
+    set_output_api(num, value)
+        
 async def main():
 
     init()
     
     while True:
-        hour = dt.now().hour
-        print(hour)
         
-        num = 1
-        value = 1
-        
-        if hour < 20:
-            value = 0
-            
-        #set_output(num, value)
-        set_output_api(num, value)
-            
+        output_by_hour(20, 1):
         time.sleep(10)
 
 #loop = asyncio.get_event_loop()
