@@ -59,6 +59,22 @@ def set_output(num, value):
 
     return True
     
+def set_output_api(num, value):
+
+    url = "http://localhost/output"
+    
+    payload = {
+        "num": num,
+        "val": value
+    }
+
+    try:
+        res = requests.post(url, data=payload, timeout=1.0)
+        print(res.text)
+        
+    except:
+        print("not working.")
+    
 async def main():
 
     init()
@@ -67,10 +83,14 @@ async def main():
         hour = dt.now().hour
         print(hour)
         
-        if hour >= 20:
-            num = 1
-            value = 1
-            set_output(num, value)
+        num = 1
+        value = 1
+        
+        if hour < 20:
+            value = 0
+            
+        #set_output(num, value)
+        set_output_api(num, value)
             
         time.sleep(10)
 
