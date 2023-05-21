@@ -38,13 +38,13 @@ GPIO.add_event_detect(22, GPIO.FALLING, callback=callback, bouncetime=300)
 GPIO.setup(16,GPIO.OUT)
 GPIO.setup(18,GPIO.OUT)
 
-time.sleep(2)
-
 for p in [16, 18]:
 
+    time.sleep(2)
     GPIO.output(p,GPIO.HIGH)
+    
     time.sleep(5)
-
     GPIO.output(p,GPIO.LOW)
-    time.sleep(5)
+    
+    #time.sleep(5)
 
