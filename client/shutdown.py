@@ -47,7 +47,8 @@ def init():
 
 def callback(channel):
     print("button pushed %s"%channel)
-    subprocess.run("/usr/sbin/shutdown -h now", shell=True)
+    if channel == 22:
+        subprocess.run("/usr/sbin/shutdown -h now", shell=True)
 
 def set_output(num, value):
 
@@ -95,7 +96,7 @@ async def main():
     
     while True:
         
-        output_by_hour(20, 1):
+        output_by_hour(20, 1)
         time.sleep(10)
 
 #loop = asyncio.get_event_loop()
