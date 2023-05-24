@@ -38,6 +38,9 @@ app = Flask(__name__)
 cnt_in1 = 0
 dat_in1 = dt.now()
 
+cnt_out1 = 0
+dat_out1 = dt.now()
+
 payload = {}
 url = config.url
 
@@ -77,10 +80,14 @@ def get_count():
 
     global cnt_in1
     global dat_in1
+    global cnt_out1
+    global dat_out1
     
     txt = {
         "cnt_in1" : cnt_in1,
-        "dat_in1" : dat_in1
+        "dat_in1" : dat_in1,
+        "cnt_out1": cnt_out1,
+        "dat_out1": dat_out1
     }
 
     return jsonify(txt)
@@ -150,11 +157,18 @@ def send_signal_gae(num):
 
 def set_output(num, value):
 
+    global cnt_out1
+    global dat_out1
+
     pin = 16 if num == int(1) else 18
     val = GPIO.HIGH if value == int(1) else GPIO.LOW
 
     GPIO.output(pin,val)
     print("pin :", pin, " / value:", val)
+
+    if num == 1
+        cnt_out1 += value
+        cnt_out2 = dt.now()
 
     return True
 
@@ -230,7 +244,7 @@ def output():
     val = GPIO.HIGH if request.form["val"] == "1" else GPIO.LOW
 
     GPIO.output(num,val)
-    send_signal_gae(num)
+    #send_signal_gae(num)
 
     return print_status()
 
