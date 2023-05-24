@@ -87,7 +87,8 @@ def get_count():
         "cnt_in1" : cnt_in1,
         "dat_in1" : dat_in1,
         "cnt_out1": cnt_out1,
-        "dat_out1": dat_out1
+        "dat_out1": dat_out1,
+        "now"     : dt.now()
     }
 
     return jsonify(txt)
@@ -166,9 +167,9 @@ def set_output(num, value):
     GPIO.output(pin,val)
     print("pin :", pin, " / value:", val)
 
-    if num == 1
+    if num == int(1):
         cnt_out1 += value
-        cnt_out2 = dt.now()
+        dat_out1 = dt.now()
 
     return True
 
@@ -179,7 +180,7 @@ def callback(channel):
     if channel == 22:
         subprocess.run(["shutdown", "-h", "now"])
     else:
-        send_signal_gae(channel)
+        #send_signal_gae(channel)
         time.sleep(0.5)
 
 def init():
@@ -240,10 +241,11 @@ def getcnt():
 @app.route('/output', methods=["POST"])
 def output():
 
-    num = 16 if int(request.form["num"]) == 1 else 18
+    num = 1 if int(request.form["num"]) == 1 else 2
     val = GPIO.HIGH if request.form["val"] == "1" else GPIO.LOW
 
-    GPIO.output(num,val)
+    set_output(num, val)
+    #GPIO.output(num,val)
     #send_signal_gae(num)
 
     return print_status()
