@@ -3,9 +3,13 @@ Sample code of sensing plaza device
 
 # setup
 
-'''
-echo "system update"
+Download os image from below.
 
+https://www.armbian.com/nanopi-neo-2/
+
+Write image to SD card and run commands below.
+
+'''
 apt update
 apt upgrade -y
 
