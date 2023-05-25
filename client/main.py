@@ -7,6 +7,7 @@ from flask import Flask, Response, request, jsonify, render_template
 
 import OPi.GPIO as GPIO
 import pandas as pd
+import sys
 
 from datetime import datetime as dt
 from datetime import timedelta
@@ -49,34 +50,29 @@ df["datetime"] = 0
 df["name"] = 0
 df["value"] = 0
 
-print(df.head())
+#print(df.head())
 
 payload = {}
 url = config.url
 
 def reset_count():
 
-    global cnt_in1
-    global dat_in1
+    global cnt
+    global dat
+    global names
     
     global payload
     
-    payload = {
-        "name": "in1",
-        "value": cnt_in1
-    }
+    for s in names:
+        cnt[s] = 0
+        dat[s] = dt.now()
+        
+    #payload = {
+    #    "name": "in1",
+    #    "value": cnt_in1
+    #}
     
-    put_signal()
-
-    cnt_in1 = 0
-    dat_in1 = dt.now()
-    
-    payload = {
-        "name": "in1",
-        "value": cnt_in1
-    }
-    
-    put_signal()
+    #put_signal()
 
 def set_count(pin, value):
 
@@ -101,11 +97,18 @@ def set_count(pin, value):
         "name": [name],
         "value": [value]
     }
+    df = pd.concat([df, pd.DataFrame(row)]).reset_index(drop=True)
+    
+    #row = [
+    #    dt.now(),
+    #    name,
+    #    value
+    #]
+    #df.at = row
     
     #print(pd.DataFrame(row).head())
     
-    df = pd.concat([df, pd.DataFrame(row)]).reset_index(drop=True)
-    print(df.head())
+    #print(df.head())
     
 def get_count():
 
@@ -196,13 +199,10 @@ def send_signal_gae(num):
 
 def set_output(num, value):
 
-    global cnt
-    global dat
-
     pin = 16 if num == int(1) else 18
     val = GPIO.HIGH if value == int(1) else GPIO.LOW
 
-    GPIO.output(pin,val)
+    GPIO.output(pin, val)
     print("pin :", pin, " / value:", val)
     
     set_count(pin, value)
@@ -235,7 +235,8 @@ def init():
     GPIO.add_event_detect(10, GPIO.BOTH, callback=callback, bouncetime=300)
 
     GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.add_event_detect(22, GPIO.FALLING, callback=callback, bouncetime=300)
+    #GPIO.add_event_detect(22, GPIO.FALLING, callback=callback, bouncetime=300)
+    GPIO.add_event_detect(22, GPIO.BOTH, callback=callback, bouncetime=300)
 
     GPIO.setup(16,GPIO.OUT)
     GPIO.setup(18,GPIO.OUT)
@@ -267,8 +268,9 @@ def reset():
 @app.route('/setcnt', methods=["POST"])
 def setcnt():
 
-    num = request.form["num"]
+    name = request.form["name"]
     val = request.form["val"]
+    
     set_count(int(val))
     
     return get_count()
@@ -285,11 +287,22 @@ def output():
     val = GPIO.HIGH if request.form["val"] == "1" else GPIO.LOW
 
     set_output(num, val)
+    
     #GPIO.output(num,val)
     #send_signal_gae(num)
 
     return print_status()
 
+@app.route('/csv')
+def output_csv():
+    
+    global df
+    
+    #text = sys.stdin.read()
+    df.to_csv(sys.stdout,index=False)
+    
+    return "test"
+    
 @app.route('/control')
 def control():
 
