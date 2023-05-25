@@ -161,7 +161,10 @@ def update(pin):
 
     global cnt
     global dat
-
+    
+    if config.flg_mail:
+        send_mail()
+    
     value = GPIO.input(pin)
     set_count(pin, value)
 
