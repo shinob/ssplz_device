@@ -119,7 +119,7 @@ def set_count(pin, value):
     df = pd.concat([df, pd.DataFrame(row)]).reset_index(drop=True)
     
     if pin == 22:
-        df.to_csv("/root/{}.csv".format(dt.now().strftime('%Y-%m-%d_%H%M%S')))
+        df.to_csv("/root/{}.csv".format(dt.now().strftime('%Y-%m-%d_%H%M%S')), index=False)
     
     cnt[name] += value
     dat[name] = dt.now()
