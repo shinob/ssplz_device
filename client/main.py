@@ -60,6 +60,10 @@ msg = ""
 payload = {}
 url = config.url
 
+def save_csv_file():
+    
+    df.to_csv("/root/{}.csv".format(dt.now().strftime('%Y-%m-%d_%H%M%S')), index=False)
+    
 def send_mail(name, value):
     
     url = config.mail_url
@@ -123,7 +127,7 @@ def set_count(pin, value):
     df = pd.concat([df, pd.DataFrame(row)]).reset_index(drop=True)
     
     if pin == 22 and value == 1:
-        df.to_csv("/root/{}.csv".format(dt.now().strftime('%Y-%m-%d_%H%M%S')), index=False)
+        save_csv_file()
     
     cnt[name] += value
     dat[name] = dt.now()
@@ -338,12 +342,14 @@ def output():
 @app.route('/csv')
 def output_csv():
     
-    global df
+    save_csv_file()
+
+    #global df
     
     #text = sys.stdin.read()
-    df.to_csv(sys.stdout,index=False)
+    #df.to_csv(sys.stdout,index=False)
     
-    return "test"
+    return "csv file saved."
     
 @app.route('/control')
 def control():
