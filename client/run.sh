@@ -6,7 +6,7 @@ URL="http://localhost/shutdown"
 
 while true
 do
-	x=$(curl -X GET $URL)
+	x=$(curl -s -X GET $URL)
 	x=$((x*1))
 
 	if [ $x -gt 0 ] ; then
