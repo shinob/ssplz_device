@@ -6,6 +6,8 @@ import asyncio
 import subprocess
 import OPi.GPIO as GPIO
 
+import time
+
 GPIO.BOARD = {
     7:    203,   # PG11
     8:    198,   # PG6
