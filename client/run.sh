@@ -16,7 +16,7 @@ do
 		echo "on"
 	fi
 	
-	sleep 1
+	sleep 10
 done
 
 #echo $?

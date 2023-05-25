@@ -41,8 +41,8 @@ async def main():
         set_output_api(1,1)
         print("{} ON : {}".format(i, dt.now() - d))
 
-        #time.sleep(60 * 3)
-        time.sleep(10)
+        time.sleep(60 * 3)
+        #time.sleep(10)
         set_output_api(1,0)
         print("{} OFF: {}".format(i, dt.now() - d))
 
