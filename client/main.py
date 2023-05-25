@@ -60,7 +60,7 @@ msg = ""
 payload = {}
 url = config.url
 
-def send_mail():
+def send_mail(name, value):
     
     url = config.mail_url
     
@@ -68,7 +68,7 @@ def send_mail():
 	    "from": config.mail_from,
 	    "subject": config.mail_subject,
 	    "name": config.mail_name,
-	    "body": config.mail_body
+	    "body": "{}\n{} : {}".format(config.mail_body, name, value)
     }
 
     try:
@@ -111,6 +111,10 @@ def set_count(pin, value):
     
     name = code[pin]
 
+    if config.flg_mail and name in config.mail_target:
+        if config.mail_value == value:
+            send_mail(name, value)
+    
     row = {
         "datetime": [dt.now()],
         "name": [name],
@@ -170,10 +174,6 @@ def update(pin):
     global dat
     
     value = GPIO.input(pin)
-    
-    if config.flg_mail:
-        if config.mail_value == value:
-            send_mail()
     
     set_count(pin, value)
 
@@ -249,7 +249,7 @@ def callback(pin):
     global msg
     
     #print("button pushed %s"%pin, GPIO.input(pin), dt.now())
-    msg = "button pushed {} {} {}".format(pin, GPIO.input(pin), dt.now())
+    msg = "input changed {} {} {}".format(pin, GPIO.input(pin), dt.now().strftime('%Y-%m-%d %H:%M:%S'))
 
     if pin == 22:
         
