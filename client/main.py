@@ -111,9 +111,6 @@ def set_count(pin, value):
     
     name = code[pin]
 
-    cnt[name] += value
-    dat[name] = dt.now()
-
     row = {
         "datetime": [dt.now()],
         "name": [name],
@@ -121,6 +118,12 @@ def set_count(pin, value):
     }
     df = pd.concat([df, pd.DataFrame(row)]).reset_index(drop=True)
     
+    if pin == 22:
+        df.to_csv("/root/{}.csv".format(dt.now().strftime('%Y-%m-%d_%H%M%S')))
+    
+    cnt[name] += value
+    dat[name] = dt.now()
+
     #row = [
     #    dt.now(),
     #    name,
@@ -259,12 +262,8 @@ def callback(pin):
         #msg += "stdout: {}".format(completed_process.stdout)
         #msg += "stderr: {}".format(completed_process.stderr)
         
-    if False:
-        subprocess.run(["shutdown", "-h", "now"])
-    else:
-        #send_signal_gae(channel)
-        update(pin)
-        time.sleep(0.5)
+    update(pin)
+    time.sleep(0.5)
 
 def init():
 
