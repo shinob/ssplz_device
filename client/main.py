@@ -39,7 +39,7 @@ app = Flask(__name__)
 
 cnt = {}
 dat = {}
-names = ["in1", "in2", "out1", "out2"]
+names = ["in1", "in2", "out1", "out2", "off"]
 
 for s in names:
     cnt[s] = 0
@@ -54,6 +54,8 @@ df["value"] = 0
 email = "shinobu@blueomega.jp"
 flg_mail = True
 #print(df.head())
+
+msg = ""
 
 payload = {}
 url = config.url
@@ -103,7 +105,8 @@ def set_count(pin, value):
         8 : "in1",
         10: "in2",
         16: "out1",
-        18: "out2"
+        18: "out2",
+        22: "off"
     }
     
     name = code[pin]
@@ -131,9 +134,9 @@ def set_count(pin, value):
     
 def get_count():
 
-    global cnt
-    global dat
-    global names
+    #global cnt
+    #global dat
+    #global names
     
     txt = {}
     
@@ -142,6 +145,7 @@ def get_count():
         txt["dat_{}".format(s)] = dat[s]
         
     txt["now"] = dt.now()
+    txt["message"] = msg
 
     return jsonify(txt)
 
@@ -180,7 +184,8 @@ def send_signal_gae(num):
         "8" : "in1",
         "10": "in2",
         "16": "out1",
-        "18": "out2"
+        "18": "out2",
+        "22": "off"
     }
 
     value = GPIO.input(num)
@@ -238,9 +243,23 @@ def set_output(num, value):
 
 def callback(pin):
 
-    print("button pushed %s"%pin, GPIO.input(pin), dt.now())
+    global msg
+    
+    #print("button pushed %s"%pin, GPIO.input(pin), dt.now())
+    msg = "button pushed {} {} {}".format(pin, GPIO.input(pin), dt.now())
 
     if pin == 22:
+        
+        msg += "stop button pushed."
+        #rs = subprocess.run(["/usr/sbin/shutdown", "-h", "now"], timeout=3)
+        
+        #completed_process = subprocess.run(["/root/ssplz_device/client/run.sh"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        #completed_process = subprocess.run(["/usr/sbin/shutdown", "-h", "now"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        #msg += "returncode: {}".format(completed_process.returncode)
+        #msg += "stdout: {}".format(completed_process.stdout)
+        #msg += "stderr: {}".format(completed_process.stderr)
+        
+    if False:
         subprocess.run(["shutdown", "-h", "now"])
     else:
         #send_signal_gae(channel)
@@ -338,6 +357,12 @@ def mail():
     send_mail()
     return "mail"
     
+@app.route('/shutdown')
+def shutdown():
+
+    return str(cnt["off"])
+    
+
 if __name__ == "__main__":
     init()
 
