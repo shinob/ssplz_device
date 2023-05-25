@@ -6,6 +6,7 @@ import flask
 from flask import Flask, Response, request, jsonify, render_template
 
 import OPi.GPIO as GPIO
+import pandas as pd
 
 from datetime import datetime as dt
 from datetime import timedelta
@@ -43,6 +44,13 @@ for s in names:
     cnt[s] = 0
     dat[s] = dt.now()
 
+df = pd.DataFrame()
+df["datetime"] = 0
+df["name"] = 0
+df["value"] = 0
+
+print(df.head())
+
 payload = {}
 url = config.url
 
@@ -70,14 +78,35 @@ def reset_count():
     
     put_signal()
 
-def set_count(name, value):
+def set_count(pin, value):
 
     global cnt
     global dat
+    global df
     
+    code = {
+        8 : "in1",
+        10: "in2",
+        16: "out1",
+        18: "out2"
+    }
+    
+    name = code[pin]
+
     cnt[name] += value
     dat[name] = dt.now()
 
+    row = {
+        "datetime": [dt.now()],
+        "name": [name],
+        "value": [value]
+    }
+    
+    #print(pd.DataFrame(row).head())
+    
+    df = pd.concat([df, pd.DataFrame(row)]).reset_index(drop=True)
+    print(df.head())
+    
 def get_count():
 
     global cnt
@@ -106,23 +135,13 @@ def put_signal():
     except:
         print("not working.")
 
-def update(num):
+def update(pin):
 
     global cnt
     global dat
 
-    name = {
-        8 : "in1",
-        10: "in2",
-        16: "out1",
-        18: "out2"
-    }
-
-    value = GPIO.input(num)
-    
-    print(name[num], value)
-    
-    set_count(name[num], value)
+    value = GPIO.input(pin)
+    set_count(pin, value)
 
 def send_signal_gae(num):
 
@@ -186,20 +205,22 @@ def set_output(num, value):
     GPIO.output(pin,val)
     print("pin :", pin, " / value:", val)
     
-    cnt["out{}".format(num)] += value
-    dat["out{}".format(num)] = dt.now()
+    set_count(pin, value)
+    
+    #cnt["out{}".format(num)] += value
+    #dat["out{}".format(num)] = dt.now()
     
     return True
 
-def callback(channel):
+def callback(pin):
 
-    print("button pushed %s"%channel, GPIO.input(channel), dt.now())
+    print("button pushed %s"%pin, GPIO.input(pin), dt.now())
 
-    if channel == 22:
+    if pin == 22:
         subprocess.run(["shutdown", "-h", "now"])
     else:
         #send_signal_gae(channel)
-        update(channel)
+        update(pin)
         time.sleep(0.5)
 
 def init():
