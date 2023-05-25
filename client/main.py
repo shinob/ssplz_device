@@ -46,14 +46,33 @@ for s in names:
     dat[s] = dt.now()
 
 df = pd.DataFrame()
+
 df["datetime"] = 0
 df["name"] = 0
 df["value"] = 0
 
+email = "shinobu@blueomega.jp"
+flg_mail = True
 #print(df.head())
 
 payload = {}
 url = config.url
+
+def send_mail():
+    
+    url = config.mail_url
+    
+    payload = {
+	    "from": config.mail_from,
+	    "subject": config.mail_subject,
+	    "name": config.mail_name,
+	    "body": config.mail_body
+    }
+
+    try:
+        res = requests.post(url, data=payload, timeout=1.0)
+    except:
+        print("ERROR")
 
 def reset_count():
 
@@ -308,6 +327,12 @@ def control():
 
     return render_template('control.html')
 
+@app.route('/mail')
+def mail():
+    
+    send_mail()
+    return "mail"
+    
 if __name__ == "__main__":
     init()
 
