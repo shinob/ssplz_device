@@ -35,11 +35,13 @@ GPIO.BOARD = {
 
 app = Flask(__name__)
 
-cnt_in1 = 0
-dat_in1 = dt.now()
+cnt = {}
+dat = {}
+names = ["in1", "in2", "out1", "out2"]
 
-cnt_out1 = 0
-dat_out1 = dt.now()
+for s in names:
+    cnt[s] = 0
+    dat[s] = dt.now()
 
 payload = {}
 url = config.url
@@ -68,28 +70,27 @@ def reset_count():
     
     put_signal()
 
-def set_count(value):
+def set_count(name, value):
 
-    global cnt_in1
-    global dat_in1
+    global cnt
+    global dat
     
-    cnt_in1 = value
-    dat_in1 = dt.now()
+    cnt[name] += value
+    dat[name] = dt.now()
 
 def get_count():
 
-    global cnt_in1
-    global dat_in1
-    global cnt_out1
-    global dat_out1
+    global cnt
+    global dat
+    global names
     
-    txt = {
-        "cnt_in1" : cnt_in1,
-        "dat_in1" : dat_in1,
-        "cnt_out1": cnt_out1,
-        "dat_out1": dat_out1,
-        "now"     : dt.now()
-    }
+    txt = {}
+    
+    for s in names:
+        txt["cnt_{}".format(s)] = cnt[s]
+        txt["dat_{}".format(s)] = dat[s]
+        
+    txt["now"] = dt.now()
 
     return jsonify(txt)
 
@@ -105,10 +106,28 @@ def put_signal():
     except:
         print("not working.")
 
+def update(num):
+
+    global cnt
+    global dat
+
+    name = {
+        8 : "in1",
+        10: "in2",
+        16: "out1",
+        18: "out2"
+    }
+
+    value = GPIO.input(num)
+    
+    print(name[num], value)
+    
+    set_count(name[num], value)
+
 def send_signal_gae(num):
 
-    global cnt_in1
-    global dat_in1
+    global cnt
+    global dat
     global payload
 
     name = {
@@ -158,19 +177,18 @@ def send_signal_gae(num):
 
 def set_output(num, value):
 
-    global cnt_out1
-    global dat_out1
+    global cnt
+    global dat
 
     pin = 16 if num == int(1) else 18
     val = GPIO.HIGH if value == int(1) else GPIO.LOW
 
     GPIO.output(pin,val)
     print("pin :", pin, " / value:", val)
-
-    if num == int(1):
-        cnt_out1 += value
-        dat_out1 = dt.now()
-
+    
+    cnt["out{}".format(num)] += value
+    dat["out{}".format(num)] = dt.now()
+    
     return True
 
 def callback(channel):
@@ -181,6 +199,7 @@ def callback(channel):
         subprocess.run(["shutdown", "-h", "now"])
     else:
         #send_signal_gae(channel)
+        update(channel)
         time.sleep(0.5)
 
 def init():
