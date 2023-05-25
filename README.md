@@ -9,7 +9,7 @@ https://www.armbian.com/nanopi-neo-2/
 
 Write image to SD card and run commands below.
 
-'''
+```
 apt update
 apt upgrade -y
 
@@ -22,4 +22,4 @@ cd
 git clone https://github.com/shinob/ssplz_device.git
 cd ssplz_device/client
 cp config_org.py config.py
-'''
+```
