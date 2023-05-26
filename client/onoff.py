@@ -31,8 +31,9 @@ async def main():
     i = 0
     d = dt.now()
 
-    while (dt.now() - d) < timedelta(days=1) :
+    #while (dt.now() - d) < timedelta(days=1) :
     #while (dt.now() - d) < timedelta(minutes=1) :
+    while True:
 
         i += 1
         #print("{} : {}".format(i, dt.now() - d))
