@@ -3,11 +3,12 @@
 #@reboot /root/ssplz_device/client/main.py
 
 import flask
-from flask import Flask, Response, request, jsonify, render_template
+from flask import Flask, Response, request, jsonify, render_template, send_file
 
 import OPi.GPIO as GPIO
 import pandas as pd
 import sys
+import os
 
 from datetime import datetime as dt
 from datetime import timedelta
@@ -15,6 +16,8 @@ from datetime import timedelta
 import time
 import requests
 import threading
+
+from glob import glob
 
 import config
 
@@ -45,12 +48,6 @@ for s in names:
     cnt[s] = 0
     dat[s] = dt.now()
 
-df = pd.DataFrame()
-
-df["datetime"] = 0
-df["name"] = 0
-df["value"] = 0
-
 email = "shinobu@blueomega.jp"
 flg_mail = True
 #print(df.head())
@@ -60,9 +57,25 @@ msg = ""
 payload = {}
 url = config.url
 
+def make_dataframe():
+    
+    df = pd.DataFrame()
+    
+    df["datetime"] = 0
+    df["name"] = 0
+    df["value"] = 0
+    
+    return df
+    
+df = make_dataframe()
+
 def save_csv_file():
     
+    global df
+    
     df.to_csv("/root/{}.csv".format(dt.now().strftime('%Y-%m-%d_%H%M%S')), index=False)
+    
+    #df = make_dataframe()
     
 def send_mail(name, value):
     
@@ -86,12 +99,12 @@ def reset_count():
     global dat
     global names
     
-    global payload
-    
     for s in names:
         cnt[s] = 0
         dat[s] = dt.now()
         
+    #global payload
+    
     #payload = {
     #    "name": "in1",
     #    "value": cnt_in1
@@ -124,6 +137,7 @@ def set_count(pin, value):
         "name": [name],
         "value": [value]
     }
+    
     df = pd.concat([df, pd.DataFrame(row)]).reset_index(drop=True)
     
     if pin == 22 and value == 1:
@@ -141,7 +155,7 @@ def set_count(pin, value):
     
     #print(pd.DataFrame(row).head())
     
-    #print(df.head())
+    print(df.head())
     
 def get_count():
 
@@ -343,13 +357,23 @@ def output():
 def output_csv():
     
     save_csv_file()
+    
+    files = glob("/root/*.csv")
+    files.sort()
 
+    filepath = files[-1]
+    filename = os.path.basename(filepath)
+    
+    return send_file(filepath, as_attachment=True,
+                     attachment_filename=filename,
+                     mimetype='text/csv')
+                     
     #global df
     
     #text = sys.stdin.read()
     #df.to_csv(sys.stdout,index=False)
     
-    return "csv file saved."
+    #return "csv file saved."
     
 @app.route('/control')
 def control():
