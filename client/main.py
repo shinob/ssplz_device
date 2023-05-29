@@ -360,8 +360,10 @@ def output_csv():
     
     files = glob("/root/*.csv")
     files.sort()
+    print(files)
 
     filepath = files[-1]
+    print(filepath)
     filename = os.path.basename(filepath)
     
     return send_file(filepath, as_attachment=True,
