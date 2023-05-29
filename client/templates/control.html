@@ -5,6 +5,7 @@
 	margin: 0px;
 	padding: 0px;
 	font-size: 10pt;
+	color: #666;
 }
 td {
 	vertical-align: middle;
@@ -13,6 +14,12 @@ td {
 }
 p {
 	padding: 5px;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	color: #F00;
 }
 form {
 	border: 0px solid #0F0;
@@ -62,6 +69,7 @@ input {
 				</tr>
 			</table>
 			<p><a href="/csv?{{datetime}}">CSV Download</a></p>
+			<p><a href="/getcnt">Check count status</a></p>
 		</div>
 	</body>
 </html>

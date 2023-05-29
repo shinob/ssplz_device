@@ -167,9 +167,9 @@ def get_count():
     
     for s in names:
         txt["cnt_{}".format(s)] = cnt[s]
-        txt["dat_{}".format(s)] = dat[s]
+        txt["dat_{}".format(s)] = dat[s].strftime('%Y-%m-%d %H:%M:%S')
         
-    txt["now"] = dt.now()
+    txt["now"] = dt.now().strftime('%Y-%m-%d %H:%M:%S')
     txt["message"] = msg
 
     return jsonify(txt)
