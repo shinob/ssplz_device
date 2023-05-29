@@ -380,7 +380,7 @@ def output_csv():
 @app.route('/control')
 def control():
 
-    return render_template('control.html')
+    return render_template('control.html', datetime=dt.now().strftime('%Y-%m-%d_%H%M%S'))
 
 @app.route('/mail')
 def mail():
