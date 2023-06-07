@@ -93,6 +93,20 @@ def send_mail(name, value):
     except:
         print("ERROR")
 
+def send_ssplz(key, value):
+    
+    url = "https://gouhi.ittools.biz/sensingplaza2/api/upload"
+
+    payload = {
+        "mailaddress": config.ssplz_mail,
+        "sensorkey": key,
+        "value": value
+    }
+    
+    res = requests.get(url, data=payload, timeout=1.0)
+    
+    print(res.text)
+    
 def reset_count():
 
     global cnt
@@ -131,6 +145,12 @@ def set_count(pin, value):
     if config.flg_mail and name in config.mail_target:
         if config.mail_value == value:
             send_mail(name, value)
+    
+    if pin == 8 and config.ssplz_flg1:
+        send_ssplz(config.ssplz_key1, value)
+    
+    if pin == 10 and config.ssplz_flg2:
+        send_ssplz(config.ssplz_key2, value)
     
     row = {
         "datetime": [dt.now()],
