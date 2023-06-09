@@ -48,10 +48,6 @@ for s in names:
     cnt[s] = 0
     dat[s] = dt.now()
 
-email = "shinobu@blueomega.jp"
-flg_mail = True
-#print(df.head())
-
 msg = ""
 
 payload = {}
@@ -227,6 +223,7 @@ def update(pin):
     
     set_count(pin, value)
 
+# not in use
 def send_signal_gae(num):
 
     global cnt
