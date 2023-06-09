@@ -57,6 +57,8 @@ msg = ""
 payload = {}
 url = config.url
 
+ssplz_url = "https://ssplz.ittools.biz/api/upload"
+
 def make_dataframe():
     
     df = pd.DataFrame()
@@ -95,15 +97,25 @@ def send_mail(name, value):
 
 def send_ssplz(key, value):
     
-    url = "https://gouhi.ittools.biz/sensingplaza2/api/upload"
-
     payload = {
         "mailaddress": config.ssplz_mail,
         "sensorkey": key,
         "value": value
     }
     
-    res = requests.get(url, data=payload, timeout=1.0)
+    res = requests.get(ssplz_url, data=payload, timeout=1.0)
+    
+    print(res.text)
+    
+def send_ssplz_wdt():
+    
+    payload = {
+        "mailaddress": config.ssplz_mail,
+        "sensorkey": config.ssplz_wdt,
+        "value": 1
+    }
+    
+    res = requests.get(ssplz_url, data=payload, timeout=1.0)
     
     print(res.text)
     
@@ -407,6 +419,12 @@ def mail():
     
     send_mail()
     return "mail"
+    
+@app.route('/wdt')
+def wdt():
+    
+    send_ssplz_wdt()
+    return "wdt"
     
 @app.route('/shutdown')
 def shutdown():
