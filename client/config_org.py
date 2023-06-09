@@ -1,6 +1,6 @@
 url = "[your server address]"
 
-device_name = "000"
+device_name = "abc000"
 
 flg_mail = False
 mail_value = 1
@@ -18,6 +18,6 @@ ssplz_mail = "xxx@xxx.com"
 ssplz_key1 = "xxxx0000"
 ssplz_key2 = "xxxx0000"
 ssplz_flg1 = False
-ssplz_flg2 = True
+ssplz_flg2 = False
 
 ssplz_wdt = "xxxx0000"
