@@ -1,0 +1,4 @@
+Options +ExecCGI
+AddHandler cgi-script .rb .py .cgi
+DirectoryIndex index.html index.rb index.py
+
