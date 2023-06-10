@@ -149,6 +149,7 @@ def set_count(pin, value):
     }
     
     name = code[pin]
+    print(name)
     
     cnt[name] += value
     dat[name] = dt.now()
