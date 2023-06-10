@@ -47,10 +47,10 @@ client.connect
 message = 'out1 on'
 client.publish(topic, message)
 
-sleep(1)
+#sleep(1)
 
-message = "out1 off"
-client.publish(topic, message)
+#message = "out1 off"
+#client.publish(topic, message)
 
 # Disconnect from the MQTT server
 client.disconnect
