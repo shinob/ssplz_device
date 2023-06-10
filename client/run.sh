@@ -3,6 +3,7 @@
 #echo "test"
 
 WDT_URL="http://localhost/wdt"
+ALG_URL="http://localhost/analog"
 SHD_URL="http://localhost/shutdown"
 i=1
 
@@ -18,6 +19,9 @@ do
 		i=0
 	fi
 
+    # Analog data update
+	x=$(curl -s -X GET $ALG_URL)
+	
     # Watch shutdown counter
 	x=$(curl -s -X GET $SHD_URL)
 	x=$((x*1))

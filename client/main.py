@@ -170,8 +170,7 @@ def set_count(pin, value):
         ssplz_value = cnt[name]
     
     if ssplz_type == "analog":
-        if dt.now() - dat[name] < timedelta(seconds=10):
-            ssplz_flg = False
+        ssplz_flg = False
         
     print("ssplz")
     print("flg  : {}".format(ssplz_flg))
@@ -445,6 +444,21 @@ def wdt():
     
     send_ssplz_wdt()
     return "wdt"
+    
+@app.route('/analog')
+def analog():
+    
+    if config.ssplz_type1 == "analog" and config.ssplz_flg1:
+        key = config.ssplz_key1
+        value = cnt["in1"]
+        send_ssplz(key, value)
+        
+    if config.ssplz_type2 == "analog" and config.ssplz_flg2:
+        key = config.ssplz_key2
+        value = cnt["in2"]
+        send_ssplz(key, value)
+        
+    return "analog"
     
 @app.route('/shutdown')
 def shutdown():
