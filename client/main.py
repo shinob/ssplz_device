@@ -171,7 +171,11 @@ def set_count(pin, value):
     
     if ssplz_type == "analog":
         ssplz_flg = False
-        
+    
+    if ssplz_type == "pulse":
+        if value == 0:
+            ssplz_flg = False
+    
     print("ssplz")
     print("flg  : {}".format(ssplz_flg))
     print("key  : {}".format(ssplz_key))
