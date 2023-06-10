@@ -151,10 +151,6 @@ def set_count(pin, value):
     name = code[pin]
     print(name)
     
-    cnt[name] += value
-    dat[name] = dt.now()
-    print(cnt[name], dat[name])
-
     if config.flg_mail and name in config.mail_target:
         if config.mail_value == value:
             send_mail(name, value)
@@ -179,6 +175,10 @@ def set_count(pin, value):
     print("type : {}".format(ssplz_type))
     print("value: {}".format(ssplz_value))
     
+    if ssplz_type == "analog":
+        if dt.now() - dat[name] > timedelta(seconds=10):
+        ssplz_flg = False
+        
     if ssplz_flg:
         send_ssplz(ssplz_key, ssplz_value)
     
@@ -193,6 +193,10 @@ def set_count(pin, value):
     if pin == 22 and value == 1:
         save_csv_file()
     
+    cnt[name] += value
+    dat[name] = dt.now()
+    print(cnt[name], dat[name])
+
     #row = [
     #    dt.now(),
     #    name,
