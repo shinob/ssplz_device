@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'mqtt'
+
 require 'uri'
 require 'net/http'
 require "json"
@@ -31,6 +33,28 @@ def get_data(key)
 
 end
 
+host = $ssplz_mqtt[:host]
+port = $ssplz_mqtt[:port]
+username = $ssplz_mqtt[:username]
+password = $ssplz_mqtt[:password]
+pem_file = $ssplz_mqtt[:pem_file]
+topic = $ssplz_mqtt[:topic]
+
+# Connect to the MQTT server
+client = MQTT::Client.new(host: host, port: port, username: username, password: password, ssl: true, cert_file: pem_file)
+client.connect
+
+message = 'out1 on'
+client.publish(topic, message)
+
+sleep(1)
+
+message = "out1 off"
+client.publish(topic, message)
+
+# Disconnect from the MQTT server
+client.disconnect
+
 puts "Content-type: text/html; charset=UTF-8\n\n"
 
 puts <<EOF
@@ -43,11 +67,13 @@ puts <<EOF
 * {
 	margin: 0px;
 	padding: 0px;
+	font-size: 10pt;
 }
 h1 {
 	text-align: center;
 	border: 0px solid #666;
 	line-height: 250%;
+	font-size: 24pt;
 }
 div.img_box {
 	width: 90%;
@@ -84,11 +110,21 @@ td.status {
 	text-align: center;
 	width: 50px;
 }
+#page {
+	width: 800px;
+	margin: 0px auto;
+}
+@media (max-width: 800px) {
+  #page {
+    width: 100%;
+  }
+}
 .err {
 	background-color: #F66;
 }
 	</style>
 	<body>
+		<div id="page">
 		<h1>古民家DX</h1>
 		<div class="img_box">
 			<img src="imgs/layout.gif" />
@@ -161,6 +197,10 @@ end
 
 puts <<EOF
 		</table>
+		</div>
+<!--
+		<iframe width="100%" height="315" src="https://www.youtube.com/embed/stQzZ9hpl-Q?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+-->
 	</body>
 </html>
 EOF
