@@ -155,6 +155,10 @@ def set_count(pin, value):
         if config.mail_value == value:
             send_mail(name, value)
     
+    ssplz_flg = False
+    ssplz_key = ""
+    ssplz_type= ""
+    
     if name == "in1":
         ssplz_flg = config.ssplz_flg1
         ssplz_key = config.ssplz_key1
