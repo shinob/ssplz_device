@@ -15,9 +15,13 @@ mail_body = "body sample"
 mail_target = "in1, in2, off"
 
 ssplz_mail = "xxx@xxx.com"
+
 ssplz_key1 = "xxxx0000"
-ssplz_key2 = "xxxx0000"
 ssplz_flg1 = False
+ssplz_type1 = "analog"
+
+ssplz_key2 = "xxxx0000"
 ssplz_flg2 = False
+ssplz_type2 = "pulse"
 
 ssplz_wdt = "xxxx0000"

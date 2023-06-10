@@ -149,16 +149,30 @@ def set_count(pin, value):
     }
     
     name = code[pin]
+    
+    cnt[name] += value
+    dat[name] = dt.now()
+
+    if pin == 8:
+        ssplz_flg = config.ssplz_flg1
+        ssplz_key = config.ssplz_key1
+        ssplz_type = config.ssplz_type1
+        
+    if pin == 16:
+        ssplz_flg = config.ssplz_flg2
+        ssplz_key = config.ssplz_key2
+        ssplz_type = config.ssplz_type2
+        
+    ssplz_value = value
+    if ssplz_type == "analog":
+        ssplz_value = cnt[name]
 
     if config.flg_mail and name in config.mail_target:
         if config.mail_value == value:
             send_mail(name, value)
     
-    if pin == 8 and config.ssplz_flg1:
-        send_ssplz(config.ssplz_key1, value)
-    
-    if pin == 10 and config.ssplz_flg2:
-        send_ssplz(config.ssplz_key2, value)
+    if ssplz_flg:
+        send_ssplz(ssplz_key, ssplz_value)
     
     row = {
         "datetime": [dt.now()],
@@ -171,9 +185,6 @@ def set_count(pin, value):
     if pin == 22 and value == 1:
         save_csv_file()
     
-    cnt[name] += value
-    dat[name] = dt.now()
-
     #row = [
     #    dt.now(),
     #    name,
