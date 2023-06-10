@@ -165,16 +165,14 @@ def set_count(pin, value):
         ssplz_key = config.ssplz_key2
         ssplz_type = config.ssplz_type2
         
+    print("ssplz")
+    print("flg : {}".format(ssplz_flg))
+    print("key : {}".format(ssplz_key))
+    print("type: {}".format(ssplz_type))
+    
     ssplz_value = value
     if ssplz_type == "analog":
         ssplz_value = cnt[name]
-    
-    print("""
-ssplz
-flg : {}
-key : {}
-type: {}
-""".format(ssplz_flg, ssplz_key, ssplz_type))
     
     if config.flg_mail and name in config.mail_target:
         if config.mail_value == value:
