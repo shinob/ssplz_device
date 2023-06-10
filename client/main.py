@@ -177,7 +177,7 @@ def set_count(pin, value):
     
     if ssplz_type == "analog":
         if dt.now() - dat[name] > timedelta(seconds=10):
-        ssplz_flg = False
+            ssplz_flg = False
         
     if ssplz_flg:
         send_ssplz(ssplz_key, ssplz_value)
