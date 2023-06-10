@@ -169,16 +169,16 @@ def set_count(pin, value):
     if ssplz_type == "analog":
         ssplz_value = cnt[name]
     
+    if ssplz_type == "analog":
+        if dt.now() - dat[name] < timedelta(seconds=10):
+            ssplz_flg = False
+        
     print("ssplz")
     print("flg  : {}".format(ssplz_flg))
     print("key  : {}".format(ssplz_key))
     print("type : {}".format(ssplz_type))
     print("value: {}".format(ssplz_value))
     
-    if ssplz_type == "analog":
-        if dt.now() - dat[name] > timedelta(seconds=10):
-            ssplz_flg = False
-        
     if ssplz_flg:
         send_ssplz(ssplz_key, ssplz_value)
     
