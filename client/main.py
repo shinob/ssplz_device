@@ -155,15 +155,15 @@ def set_count(pin, value):
     dat[name] = dt.now()
     print(cnt[name], dat[name])
 
-    if pin == 8:
+    if name == "in1":
         ssplz_flg = config.ssplz_flg1
         ssplz_key = config.ssplz_key1
-        ssplz_type = config.ssplz_type1
+        ssplz_type= config.ssplz_type1
         
-    if pin == 16:
+    if name == "in2":
         ssplz_flg = config.ssplz_flg2
         ssplz_key = config.ssplz_key2
-        ssplz_type = config.ssplz_type2
+        ssplz_type= config.ssplz_type2
         
     print("ssplz")
     print("flg : {}".format(ssplz_flg))
