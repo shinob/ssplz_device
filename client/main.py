@@ -155,6 +155,10 @@ def set_count(pin, value):
     dat[name] = dt.now()
     print(cnt[name], dat[name])
 
+    if config.flg_mail and name in config.mail_target:
+        if config.mail_value == value:
+            send_mail(name, value)
+    
     if name == "in1":
         ssplz_flg = config.ssplz_flg1
         ssplz_key = config.ssplz_key1
@@ -165,18 +169,15 @@ def set_count(pin, value):
         ssplz_key = config.ssplz_key2
         ssplz_type= config.ssplz_type2
         
-    print("ssplz")
-    print("flg : {}".format(ssplz_flg))
-    print("key : {}".format(ssplz_key))
-    print("type: {}".format(ssplz_type))
-    
     ssplz_value = value
     if ssplz_type == "analog":
         ssplz_value = cnt[name]
     
-    if config.flg_mail and name in config.mail_target:
-        if config.mail_value == value:
-            send_mail(name, value)
+    print("ssplz")
+    print("flg  : {}".format(ssplz_flg))
+    print("key  : {}".format(ssplz_key))
+    print("type : {}".format(ssplz_type))
+    print("value: {}".format(ssplz_value))
     
     if ssplz_flg:
         send_ssplz(ssplz_key, ssplz_value)
