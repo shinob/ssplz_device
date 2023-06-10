@@ -153,6 +153,7 @@ def set_count(pin, value):
     
     cnt[name] += value
     dat[name] = dt.now()
+    print(cnt[name], dat[name])
 
     if pin == 8:
         ssplz_flg = config.ssplz_flg1
