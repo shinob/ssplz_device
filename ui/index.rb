@@ -146,6 +146,14 @@ $ssplz_key.each do |snc|
   #puts name, key
 
   val = get_data(key)
+  
+  if name[0] == "裏" then
+    val[1] = "開"
+  end
+
+  if name[0] == "事" then
+    val[1] = "検知"
+  end
 
   puts <<EOF
 		<tr>
