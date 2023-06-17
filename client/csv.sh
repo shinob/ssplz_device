@@ -5,7 +5,9 @@
 
 URL="http://localhost/csv"
 
-x=$(curl -s -X GET $URL)
+x=$(/usr/bin/curl -s -X GET $URL)
 
 #echo $x
 echo "done."
+
+#/usr/sbin/reboot
