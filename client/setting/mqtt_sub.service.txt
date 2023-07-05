@@ -1,0 +1,15 @@
+[Unit]
+Description=MQTT Subscribe
+After=network.target
+
+[Service]
+Type=idle
+ExecStart=/root/ssplz_device/client/mqtt_sub.py
+
+[Install]
+WantedBy=multi-user.target
+
+#sudo cp mqtt_sub.service.txt /etc/systemd/system/mqtt_sub.service
+#sudo systemctl enable mqtt_sub
+#sudo systemctl start mqtt_sub
+#sudo systemctl status mqtt_sub

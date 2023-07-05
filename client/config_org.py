@@ -25,3 +25,8 @@ ssplz_flg2 = False
 ssplz_type2 = "pulse"
 
 ssplz_wdt = "xxxx0000"
+
+mqtt_url = ""
+mqtt_user = ""
+mqtt_passwd = ""
+mqtt_topic = ""

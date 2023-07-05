@@ -10,4 +10,4 @@ x=$(/usr/bin/curl -s -X GET $URL)
 #echo $x
 echo "done."
 
-#/usr/sbin/reboot
+/usr/sbin/reboot
